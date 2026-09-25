@@ -1,6 +1,6 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 
-import { Analytics } from '@vercel/analytics/next'
+
 
 import appCss from '../styles.css?url'
 
@@ -44,7 +44,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body className="pong-shell antialiased">
         {children}
         <Scripts />
-        <Analytics />
       </body>
     </html>
   )
