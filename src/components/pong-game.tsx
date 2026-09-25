@@ -257,7 +257,7 @@ export function PongGame() {
               Local arcade // {subtitle}
             </p>
             <h1 className="mt-2 text-2xl font-bold uppercase tracking-[0.12em] sm:text-3xl">
-              Pong / 01
+              Pong Game
             </h1>
           </div>
           <p className="text-right text-[10px] uppercase tracking-[0.2em] text-white/45">

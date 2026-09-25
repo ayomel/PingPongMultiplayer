@@ -21,7 +21,7 @@ export const Route = createRootRoute({
         content: 'A minimal two-player Pong game playable in your browser.',
       },
       {
-        title: 'Pong / 01 — Local Arcade',
+        title: 'Pong Game',
       },
     ],
     links: [
