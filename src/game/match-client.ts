@@ -1,3 +1,4 @@
+import { v4 } from 'uuid'
 import { isRoomId, parseServerMessage } from '#/game/protocol'
 import type { ClientMessage, MatchSnapshot, Seat } from '#/game/protocol'
 import type { PaddleIntent } from '#/game/rules'
@@ -16,7 +17,7 @@ export type MatchSession = {
 }
 
 export function createInvite(): { url: string; roomId: string } {
-  const roomId = crypto.randomUUID()
+  const roomId = v4()
   const url = new URL(`/play/${roomId}`, window.location.origin).toString()
   return { url, roomId }
 }
@@ -126,7 +127,7 @@ function seatToken(roomId: string) {
   const key = `pong-seat:${roomId}`
   const existing = sessionStorage.getItem(key)
   if (existing) return existing
-  const token = crypto.randomUUID()
+  const token = v4()
   sessionStorage.setItem(key, token)
   return token
 }

@@ -1,3 +1,4 @@
+import { validate, version } from 'uuid'
 import { HEIGHT } from '#/game/rules'
 
 export type Seat = 'left' | 'right'
@@ -24,11 +25,8 @@ export type ClientMessage =
   | { type: 'paddle'; up: boolean; down: boolean; targetY?: number }
   | { type: 'restart' }
 
-const ROOM_ID =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-
 export function isRoomId(value: string): boolean {
-  return ROOM_ID.test(value)
+  return validate(value) && version(value) === 4
 }
 
 export function parseClientMessage(raw: unknown): ClientMessage | null {
