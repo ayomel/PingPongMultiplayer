@@ -16,6 +16,7 @@ import {
   step,
 } from '#/game/rules'
 import type { PaddleIntent, Status } from '#/game/rules'
+import { createTouchPaddles } from '#/game/touch-input'
 
 type Mode = 'pvp' | 'ai'
 
@@ -60,6 +61,12 @@ export function PongGame() {
     const context = canvas?.getContext('2d')
     if (!canvas || !context) return
 
+    const touch = createTouchPaddles(canvas, () => {
+      if (modeRef.current === 'pvp') return 'split'
+      if (modeRef.current === 'ai') return 'left'
+      return null
+    })
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (['w', 's', 'ArrowUp', 'ArrowDown', ' '].includes(event.key)) {
         event.preventDefault()
@@ -96,6 +103,7 @@ export function PongGame() {
             : {
                 up: keysRef.current.has('arrowup'),
                 down: keysRef.current.has('arrowdown'),
+                targetY: touch.read('right'),
               }
         const next = step(
           current,
@@ -103,6 +111,7 @@ export function PongGame() {
             left: {
               up: keysRef.current.has('w'),
               down: keysRef.current.has('s'),
+              targetY: touch.read('left'),
             },
             right: rightIntent,
           },
@@ -135,6 +144,7 @@ export function PongGame() {
     frame = requestAnimationFrame(loop)
     return () => {
       cancelAnimationFrame(frame)
+      touch.dispose()
       window.removeEventListener('keydown', onKeyDown)
       window.removeEventListener('keyup', onKeyUp)
     }

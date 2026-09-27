@@ -13,6 +13,7 @@ import { paintCourt } from '#/game/paint'
 import { isRoomId } from '#/game/protocol'
 import { WINNING_SCORE, createGame } from '#/game/rules'
 import type { PaddleIntent } from '#/game/rules'
+import { createTouchPaddles } from '#/game/touch-input'
 
 export const Route = createFileRoute('/play/$roomId')({
   component: PlayPage,
@@ -78,15 +79,24 @@ function OnlineMatch({ roomId }: { roomId: string }) {
   }, [])
 
   useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
     const keys = new Set<string>()
+    const ownSeat = () => {
+      const current = viewRef.current
+      return current.kind === 'live' ? current.seat : null
+    }
     const publish = () => {
+      const seat = ownSeat()
       const intent = {
         up: keys.has('w') || keys.has('arrowup'),
         down: keys.has('s') || keys.has('arrowdown'),
+        targetY: seat ? touch.read(seat) : undefined,
       }
       intentRef.current = intent
       sessionRef.current?.sendPaddle(intent)
     }
+    const touch = createTouchPaddles(canvas, ownSeat, publish)
     const onKeyDown = (event: KeyboardEvent) => {
       if (['w', 's', 'ArrowUp', 'ArrowDown', ' '].includes(event.key)) {
         event.preventDefault()
@@ -106,6 +116,7 @@ function OnlineMatch({ roomId }: { roomId: string }) {
     }
     const onBlur = () => {
       keys.clear()
+      touch.clear()
       publish()
     }
     window.addEventListener('keydown', onKeyDown)
@@ -114,6 +125,7 @@ function OnlineMatch({ roomId }: { roomId: string }) {
     const heartbeat = window.setInterval(publish, 100)
     return () => {
       window.clearInterval(heartbeat)
+      touch.dispose()
       window.removeEventListener('keydown', onKeyDown)
       window.removeEventListener('keyup', onKeyUp)
       window.removeEventListener('blur', onBlur)

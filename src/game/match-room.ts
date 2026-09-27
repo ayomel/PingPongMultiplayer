@@ -58,7 +58,11 @@ export class MatchRoom extends DurableObject<Env> {
     if (message.type === 'paddle') {
       const seat = this.seatForSocket(socket)
       if (!seat) return
-      seat.intent = { up: message.up, down: message.down }
+      seat.intent = {
+        up: message.up,
+        down: message.down,
+        targetY: message.targetY,
+      }
       return
     }
     if (this.game.status !== 'finished') return
