@@ -2,6 +2,8 @@
 
 Browser Pong with three ways to play: two players on one keyboard, one player vs CPU, or a remote match over a shareable link.
 
+![A match against the CPU](docs/screenshot.png)
+
 The server simulation for remote games runs in a Cloudflare Durable Object so both clients see the same ball and paddles.
 
 ## Play
