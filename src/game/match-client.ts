@@ -97,7 +97,12 @@ export function joinMatch(roomId: string): MatchSession {
       return seat
     },
     sendPaddle(intent) {
-      send({ type: 'paddle', up: intent.up, down: intent.down })
+      send({
+        type: 'paddle',
+        up: intent.up,
+        down: intent.down,
+        targetY: intent.targetY,
+      })
     },
     sendRestart() {
       send({ type: 'restart' })

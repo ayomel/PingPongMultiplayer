@@ -14,7 +14,7 @@ export const RIGHT_X = WIDTH - 46
 export type Status = 'playing' | 'finished'
 export type Ball = { x: number; y: number; vx: number; vy: number }
 export type Paddle = { x: number; y: number }
-export type PaddleIntent = { up: boolean; down: boolean }
+export type PaddleIntent = { up: boolean; down: boolean; targetY?: number }
 export type GameState = {
   left: Paddle
   right: Paddle
@@ -127,8 +127,13 @@ function movePaddle(
   speed: number,
   dt: number,
 ) {
-  if (intent.up) paddle.y -= speed * dt
-  if (intent.down) paddle.y += speed * dt
+  if (intent.targetY !== undefined) {
+    const diff = intent.targetY - (paddle.y + PADDLE_HEIGHT / 2)
+    paddle.y += Math.sign(diff) * Math.min(Math.abs(diff), speed * dt)
+  } else {
+    if (intent.up) paddle.y -= speed * dt
+    if (intent.down) paddle.y += speed * dt
+  }
   paddle.y = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, paddle.y))
 }
 

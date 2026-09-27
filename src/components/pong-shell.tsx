@@ -98,7 +98,7 @@ export function PongShell({
               ref={canvasRef}
               width={WIDTH}
               height={HEIGHT}
-              className="absolute inset-0 h-full w-full"
+              className="absolute inset-0 h-full w-full touch-none select-none"
               aria-label="Playable Pong canvas"
             />
             {overlay}
