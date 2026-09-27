@@ -25,6 +25,7 @@
     "@tanstack/react-router-devtools": "latest",
     "@tanstack/react-start": "latest",
     "@vercel/analytics": "^2.0.1",
+    "copy-to-clipboard": "^4.0.2",
     "drizzle-orm": "^0.45.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

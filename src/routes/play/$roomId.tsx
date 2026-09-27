@@ -1,4 +1,5 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
+import copy from 'copy-to-clipboard'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import {
@@ -139,12 +140,9 @@ function OnlineMatch({ roomId }: { roomId: string }) {
           copied={copied}
           winner={winner}
           onCopy={() => {
-            void navigator.clipboard.writeText(inviteUrl).then(
-              () => {
-                setCopied(true)
-              },
-              () => {},
-            )
+            void copy(inviteUrl).then((ok) => {
+              if (ok) setCopied(true)
+            })
           }}
           onRestart={() => sessionRef.current?.sendRestart()}
         />
