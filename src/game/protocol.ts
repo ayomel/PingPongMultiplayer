@@ -1,3 +1,5 @@
+import { HEIGHT } from '#/game/rules'
+
 export type Seat = 'left' | 'right'
 export type MatchPhase = 'waiting' | 'playing' | 'finished' | 'opponent-left'
 
@@ -19,7 +21,7 @@ export type ServerMessage =
 
 export type ClientMessage =
   | { type: 'join'; token: string }
-  | { type: 'paddle'; up: boolean; down: boolean }
+  | { type: 'paddle'; up: boolean; down: boolean; targetY?: number }
   | { type: 'restart' }
 
 const ROOM_ID =
@@ -40,7 +42,22 @@ export function parseClientMessage(raw: unknown): ClientMessage | null {
   if (message.type === 'paddle') {
     if (typeof message.up !== 'boolean' || typeof message.down !== 'boolean')
       return null
-    return { type: 'paddle', up: message.up, down: message.down }
+    if (message.targetY === undefined) {
+      return { type: 'paddle', up: message.up, down: message.down }
+    }
+    if (
+      !isFiniteNumber(message.targetY) ||
+      message.targetY < 0 ||
+      message.targetY > HEIGHT
+    ) {
+      return null
+    }
+    return {
+      type: 'paddle',
+      up: message.up,
+      down: message.down,
+      targetY: message.targetY,
+    }
   }
   if (message.type === 'restart') return { type: 'restart' }
   return null
