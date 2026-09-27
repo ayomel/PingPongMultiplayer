@@ -1,6 +1,6 @@
 export const WIDTH = 1000
 export const HEIGHT = 600
-export const WINNING_SCORE = 7
+export const WINNING_SCORE = 5
 export const PADDLE_WIDTH = 12
 export const PADDLE_HEIGHT = 108
 export const PADDLE_SPEED = 520
